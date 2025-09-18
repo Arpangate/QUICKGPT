@@ -1,5 +1,5 @@
 import Stripe from "stripe"
-// import { Transaction } from "../models/Transaction.js"
+import Transaction from "../models/Transaction.js"
 import User from "../models/User.js"
 
 export const stripeWebhooks = async (request, response) => {
@@ -31,11 +31,13 @@ export const stripeWebhooks = async (request, response) => {
                         // Update credits in user account
                         await User.updateOne(
                             { _id: transaction.userId },
-                            { $inc: { credits: transaction.credits } }
+                            { $inc: { credits: transaction.credits } },
+                            {isPaid: true}
                         )
-
+                        
                         // Update credit Payment status
-                        transaction.isPaid = true
+                        transaction.isPaid = true;
+                        // console.log(transaction)
                         await transaction.save()
                     }
                 } else {
