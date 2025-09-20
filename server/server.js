@@ -3,17 +3,10 @@ import "dotenv/config"
 import cors from 'cors'
 import connectDB from './configs/db.js';
 import userRouter from './routes/userRoutes.js';
-// import mongoose from 'mongoose';
-// import "./models/User.js"
-// import "./models/Chat.js"
-// // import "./models/Message.js"
-// // import "./models/Plan.js"
-// // import "./models/Transaction.js"
-
 import chatRouter from './routes/chatRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
 import creditRouter from './routes/creditRoutes.js';
-import { stripeWebhooks } from './controllers/webhooks.js';
+import {stripeWebhooks} from './controllers/webhooks.js';
 
 
 const app = express();

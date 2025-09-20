@@ -35,6 +35,8 @@ export const deleteChat = async (req, res) => {
     try {
         const userId = req.user._id; // req.user is set in the protect middleware
         const {chatId} = req.body;
+        // console.log(userId);
+        // console.log(chatId);
         await Chat.deleteOne({ _id: chatId, userId });
         
         res.status(200).json({ success: true, message: "Chat deleted successfully" });

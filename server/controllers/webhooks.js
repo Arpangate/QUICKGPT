@@ -4,7 +4,7 @@ import User from "../models/User.js"
 
 export const stripeWebhooks = async (request, response) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
-    const sig = request.header("stripe-signature")
+    const sig = request.headers["stripe-signature"]
 
     let event;
     try {
@@ -17,27 +17,33 @@ export const stripeWebhooks = async (request, response) => {
         switch (event.type) {
             case "payment_intent.succeeded": {
                 const paymentIntent = event.data.object
+                console.log("Payment Intent:", paymentIntent.id);
                 const sessionList = await stripe.checkout.sessions.list({
                     payment_intent: paymentIntent.id,
                 })
 
                 const session = sessionList.data[0]
+                console.log("Session:", session);
+                if (!session) {
+                    console.log("No session found for this paymentIntent");
+                    break;
+                }
                 const { transactionId, appId } = session.metadata
+                 console.log("Metadata:", transactionId, appId);
 
-                if (appId === "quickgpt") {
+                if (appId === 'quickgpt') {
                     const transaction = await Transaction.findOne({ _id: transactionId, isPaid: false })
-
+                      console.log("Transaction before update:", transaction);
                     if (transaction) {
                         // Update credits in user account
                         await User.updateOne(
                             { _id: transaction.userId },
-                            { $inc: { credits: transaction.credits } },
-                            {isPaid: true}
+                            { $inc: { credits: transaction.credits } }
                         )
-                        
+                        // console.log(transaction._id)
                         // Update credit Payment status
                         transaction.isPaid = true;
-                        // console.log(transaction)
+                        console.log("Transaction after update:", transaction);
                         await transaction.save()
                     }
                 } else {
