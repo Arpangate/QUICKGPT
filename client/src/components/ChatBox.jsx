@@ -3,6 +3,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useAppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import Message from './Message'
+import toast from "react-hot-toast"
+
 
 const ChatBox = () => {
 
@@ -16,7 +18,7 @@ const ChatBox = () => {
     const [mode, setMode] = useState('text') // text or image
     const [isPublished, setIsPublished] = useState(false)
 
-    const submit = async (e) => {
+    const onSubmit = async (e) => {
         try {
             e.preventDefault();
             if(!user) return toast('Login to send message')
@@ -69,12 +71,12 @@ const ChatBox = () => {
     <div ref={containerRef} className="flex-1 mb-5 overflow-y-scroll">
         {messages.length === 0 && (
         <div className="h-full flex flex-col items-center justify-center gap-2 text-primary">
-            <img
+            <img 
             src={theme === 'dark' ? assets.logo_full : assets.logo_full_dark}
             alt=""
-            className="w-full max-w-56 sm:max-w-68"
+            className="w-full max-w-1000 sm:max-w-1000 h-full max-h-47 sm:max-h-60"
             />
-            <p className="mt-5 text-4xl sm:text-6xl text-center text-gray-400 dark:text-white">
+            <p className="mt-5 text-4xl sm:text-6xl text-center text-blue-900 dark:text-blue-100">
             Ask me anything.
             </p>
         </div>
@@ -106,7 +108,7 @@ const ChatBox = () => {
 
     {/* Prompt Input Box */}
     <form
-     onSubmit={submit}
+     onSubmit={onSubmit}
       className="bg-primary/20 dark:bg-[#583C79]/30 
                     border border-primary dark:border-[#80609F]/30 
                     rounded-full w-full max-w-2xl p-3 pl-4 mx-auto 
@@ -125,7 +127,7 @@ const ChatBox = () => {
     {/* Text input */}
     <input
         onChange={(e) => setPrompt(e.target.value)}
-        // value={prompt}
+        value={prompt}
         type="text"
         placeholder="Type your prompt here..."
         className="flex-1 w-full text-sm outline-none"

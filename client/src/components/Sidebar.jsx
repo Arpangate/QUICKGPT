@@ -36,7 +36,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <div className={`flex flex-col h-screen min-w-72 p-5 
-              dark:bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 
+              dark:bg-gradient-to-b from-[#062c47]/30 to-[#01224d]/30 
               border-r border-[#80609F]/30 
               backdrop-blur-3xl transition-all duration-500 
               max-md:absolute left-0 z-1 
@@ -45,7 +45,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       <img
         src={theme === 'dark' ? assets.logo_full : assets.logo_full_dark}
         alt="logo"
-        className="w-full max-w-48"
+        className="w-full max-w-45"
       />
 
       {/* New Chat Button */}
@@ -54,7 +54,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       </button>
 
       {/* Search Conversations */}
-      <div className="flex items-center w-full p-2 mb-4 bg-gray-200 rounded-lg dark:bg-gray-700">
+      <div className="flex items-center w-full p-2 mb-4 bg-gray-400 rounded-lg dark:bg-gray-200">
         <img src={assets.search_icon} alt="search-icon" className="w-5 h-5 mr-2" />
         <input
           type="text"

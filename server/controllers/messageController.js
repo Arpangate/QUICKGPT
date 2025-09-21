@@ -80,8 +80,11 @@ export const imageMessageController = async(req, res) => {
     try {
         const userId = req.user._id;
         // Check Credits
-        if(req.user.credits < 1){
-            return res.json({success: false, message: "You don'y have enough credits to use this feature"})
+        if (req.user.credits < 2) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "You don't have enough credits to use this feature" 
+            });
         }
         const {prompt, chatId, isPublished} = req.body
         // Find chat
@@ -122,9 +125,10 @@ export const imageMessageController = async(req, res) => {
             isPublished,
         }
         res.status(201).json({success: true, reply})
+        // res.status(201).json({success: true, message: 'hello'})
         
         
-        chat.message.push(reply)
+        chat.messages.push(reply)
         await chat.save()
 
         await User.updateOne({_id: userId}, {$inc: {credits: -2}})
